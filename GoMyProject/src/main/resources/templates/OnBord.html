@@ -2,30 +2,162 @@
 <html lang="en" mlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
+<title>Onbord client</title>
+
+<!-- <script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.min.js}" ></script> -->
+
+<!-- <script type="text/javascript" scr="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" scr="https://code.jquery.com/jquery-1.12.4.js"></script>
+ -->
 
 <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
-
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 <script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
+ <script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.js}" ></script>
 
-<title>Insert title here</title>
+<!-- <script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}" ></script> -->
+
+
+<!-- <script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.js}" ></script> -->
+<!-- <script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.min.js}" ></script> -->
+
+
+<!-- 
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"  />
+<script type="text/javascript" src="/jquery/jquery-ui-1.12.1/external/jquery/jquery.js"/>
+<script type="text/javascript" src="/jquery/jquery-ui-1.12.1/external/jquery/jquery.1.12.4.js"/>
+<script type="text/javascript" src="/jquery/jquery-ui-1.12.1/jquery-ui.min.js"/>
+ -->
+ 
+ <script src="/jquery/jquery-3.4.1.js" ></script>
+
+<!-- Working -->
+
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"  />
+    <!-- <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<script type="text/javascript" th:href="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+ 
+ 
+ <!-- <script type="text/javascript" src="/js/autocomplete.js"></script> -->
+ <script type="text/javascript">
+
+jQuery(document).ready(function($) {
+
+	// to get the client list in drop down.
+	jQuery("#client").autocomplete({		
+		source: "\clientList",
+		minLength: 0,
+        scroll: true,
+        select: function(event, ui){
+        	this.value=ui.item.label;
+        	$("#client").val(ui.item.label);
+        	//console.log(this.value);
+        	//console.log(ui.item);
+        	$("#clientId").val(ui.item.value);
+        	
+        	alert("INSID");
+        	jQuery.getJSON("getFundsFromClient", { 
+        		p1 : ui.item.label
+   		 	}, function(responseData) { 
+   			 	console.log(responseData);
+   		 	});
+        	return false;
+        }
+	});
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').change(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}	
+	});
+			
+	
+	 
+});
+
+</script>
+
+
+<script type="text/javascript">
+
+$(function(){
+	  $("#nav-placeholder").load("Nav");
+	});
+</script>
+
+
+
 </head>
 <body>
 
+<div id="nav-placeholder"></div>
+<br>
 <div class="container">
 
-	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
-		<input type="text" th:field="*{clientId}" placeholder="Client Short Name"
+<!-- 	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
+		
+		<input id="client" type="text" class="form-control mb-4 col-4">
+		
+		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		
+		<input list="client_search" class="form-control mb-4 col-4" type="search" placeholder="search" aria-label="Search" name="search">
+		<datalist id="client_search">
+			<option>A</option>
+			<option>B</option>
+			<option>C</option>
+			<option>X</option>
+		</datalist>
+		</input>
+					
+		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"
 		class="form-control mb-4 col-4">
-		<input type="text" th:field="*{fundName}" placeholder="Client Short Name"
+		<input type="text" th:field="*{}" placeholder="">
+		<input type="text" th:field="*{}" placeholder="">
+		<button type="submit" class="btn btn-info col-2">Save</button>
+	</form> -->
+
+
+Testing
+<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
+		
+		<input id="client" type="text" class="form-control mb-4 col-4">
+		
+		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		
+		<input list="client_search" class="form-control mb-4 col-4" type="search" placeholder="search" aria-label="Search" name="search">
+		<datalist id="client_search">
+			<option>A</option>
+			<option>B</option>
+			<option>C</option>
+			<option>X</option>
+		</datalist>
+		</input>
+					
+		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"
 		class="form-control mb-4 col-4">
 		<!-- <input type="text" th:field="*{}" placeholder=""> -->
 		<!-- <input type="text" th:field="*{}" placeholder=""> -->
+		
+
+<h6>Add no of funds</h6>
+                <tr th:each="fund, itemStat : *{fundList}">
+                    <td><input th:field="*{fundList[__${itemStat.index}__].FundShortName}"  class="form-control mb-4 col-4" th:placeholder="${itemStat.count}"/></td>                    
+                </tr>
+
 		<button type="submit" class="btn btn-info col-2">Save</button>
 	</form>
 
+
+
 </div>
+
+
+
 </body>
 </html>

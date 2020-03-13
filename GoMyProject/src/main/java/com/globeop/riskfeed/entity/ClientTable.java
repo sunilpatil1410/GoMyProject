@@ -17,12 +17,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;  
 
 @Entity  
 @Table(name="ClientTable")  
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ClientTable implements Serializable{
 	/**
 	 * 
@@ -35,27 +33,23 @@ public class ClientTable implements Serializable{
 	private int ClientID;
 	
 	@Column(name = "ClientShortName")
-	private String ClientShortName;
+	private String clientShortName;
 	
 	@Column(name = "Modified_date")
     private Date Modified_date;
 
+	@JsonManagedReference
+	@OneToMany(targetEntity = FundTable.class, cascade = CascadeType.ALL, mappedBy="client")
 	
-	//@JsonManagedReference
-	//@OneToMany(targetEntity = FundTable.class, cascade = CascadeType.ALL, mappedBy="client")
-	
-	@JsonIgnore
-	@OneToMany(targetEntity = FundTable.class,fetch=FetchType.EAGER, cascade = CascadeType.ALL) 
-	@JoinColumn(name="ClientID")	
+	//@OneToMany(targetEntity = FundTable.class,fetch=FetchType.EAGER, cascade = CascadeType.ALL) 
+	//@JoinColumn(name="ClientID")
 	private Set<FundTable> funds;
-		
-	/*
-	 * @JsonManagedReference
-	 * 
-	 * @OneToMany(targetEntity = ClientOnboardTable.class, cascade =
-	 * CascadeType.ALL, mappedBy="client") private Set<ClientOnboardTable>
-	 * clientOnboardSet;
-	 */
+			
+	@JsonManagedReference
+	@JsonIgnore
+	@OneToMany(targetEntity = ClientOnboardTable.class, cascade = CascadeType.ALL, mappedBy="client") 	
+    private Set<ClientOnboardTable> clientOnboardSet;
+
 
 
 	public Set<FundTable> getFunds() {
@@ -67,13 +61,13 @@ public class ClientTable implements Serializable{
 	}
 	
 
-	/*
-	 * public Set<ClientOnboardTable> getClientOnboardSet() { return
-	 * clientOnboardSet; }
-	 * 
-	 * public void setClientOnboardSet(Set<ClientOnboardTable> clientOnboardSet) {
-	 * this.clientOnboardSet = clientOnboardSet; }
-	 */
+	public Set<ClientOnboardTable> getClientOnboardSet() {
+		return clientOnboardSet;
+	}
+
+	public void setClientOnboardSet(Set<ClientOnboardTable> clientOnboardSet) {
+		this.clientOnboardSet = clientOnboardSet;
+	}
 
 	public int getClientID() {
 		return ClientID;
@@ -84,11 +78,11 @@ public class ClientTable implements Serializable{
 	}
 
 	public String getClientShortName() {
-		return ClientShortName;
+		return clientShortName;
 	}
 
 	public void setClientShortName(String clientShortName) {
-		ClientShortName = clientShortName;
+		this.clientShortName = clientShortName;
 	}
 
 	public Date getModified_date() {
@@ -107,28 +101,22 @@ public class ClientTable implements Serializable{
 		theFund.setClient(this);
         this.funds.add(theFund);
     }
+	
+	public void addClientOnboard(ClientOnboardTable theClientOnboardTable) {
+		if(clientOnboardSet==null) {
+			clientOnboardSet = new HashSet<ClientOnboardTable>();
+		}
+		theClientOnboardTable.setClient(this);
+		this.clientOnboardSet.add(theClientOnboardTable);
+    }
 
 	@Override
 	public String toString() {
-		return "ClientTable [ClientID=" + ClientID + ", ClientShortName=" + ClientShortName + ", Modified_date="
-				+ Modified_date + ", funds=" + funds + "]";
+		return "ClientTable [ClientID=" + ClientID + ", ClientShortName=" + clientShortName + ", Modified_date="
+				+ Modified_date + ", funds=" + funds + ", clientOnboardSet=" + clientOnboardSet + "]";
 	}
-	
-	/*
-	 * public void addClientOnboard(ClientOnboardTable theClientOnboardTable) {
-	 * if(clientOnboardSet==null) { clientOnboardSet = new
-	 * HashSet<ClientOnboardTable>(); } theClientOnboardTable.setClient(this);
-	 * this.clientOnboardSet.add(theClientOnboardTable); }
-	 */
 
-	/*
-	 * @Override public String toString() { return "ClientTable [ClientID=" +
-	 * ClientID + ", ClientShortName=" + ClientShortName + ", Modified_date=" +
-	 * Modified_date + ", funds=" + funds + ", clientOnboardSet=" + clientOnboardSet
-	 * + "]"; }
-	 */
 
-	
 	
     
 }

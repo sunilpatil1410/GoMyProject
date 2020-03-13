@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+<!-- <link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<script type="text/javascript" th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}" ></script> -->
+
+
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
+
+<script type="text/javascript">
+
+$(function(){
+	  $("#nav-placeholder").load("Nav");
+	});
+</script>
+
+</head>
+
+<body>
+<div id="nav-placeholder"></div>
+<div class="container">
+
+<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+
+<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+
+	<div class="container">
+	
+	
+	
+	<table border="1">
+		<thead>
+			<!-- <th>Id</th>	 -->		
+			<th>Client Id</th>		
+			<th>Client Name</th>
+			<!-- <th>Fund Name</th> -->			
+			<th>modified Date</th>
+		</thead>
+		
+		<tbody>
+			<tr th:each="client : ${client}">
+			<td th:text="${client.ClientID}">			
+			<td th:text="${client.ClientShortName}">
+			<!-- <td th:text="${client.funds}"> -->
+			<td th:text="${client.Modified_date}">
+		</tbody>
+	</table>
+	<br>
+	
+	<table border="1" class="table table-bordered table-hover">
+		<thead class="thead-dark">
+			<!-- <th>Id</th>	 -->
+			<th>Sr NO.</th>			
+			<th>Client Id</th>		
+			<th>Client Name</th>
+			<th>Fund Name</th>			
+			<th>Added Date</th>
+		</thead>
+		
+		<tbody>
+			<tr th:each="client : ${client}">			
+			<tr th:each="fund, iterationStatus : ${client.funds}">			
+			<td th:text="${iterationStatus.count}">	
+			<td th:text="${client.ClientID}">			
+			<td th:text="${client.ClientShortName}">
+			<td th:text="${fund.FundShortName}">
+			<td th:text="${fund.Modified_date}">
+		</tbody>
+	</table>
+	
+	<br>
+	<table border="1">
+		<thead>
+			<th>Id</th>
+			<th>Fund Name</th>		
+			<!-- <th>Client Id</th>		
+			<th>Client Name</th>	 -->
+			<th>modified Date</th>
+		</thead>
+		
+		<tbody>
+			<tr th:each="fund : ${funds}">
+			<td th:text="${fund.FundID}">			
+			<td th:text="${fund.FundShortName}">
+			<!-- <td th:text="${fund.client.ClientID}">
+			<td th:text="${fund.client.ClientShortName}"> -->
+			<td th:text="${fund.Modified_date}">
+		</tbody>
+	</table>
+	 
+	
+	
+	
+	</div>
+</div>
+
+</body>
+
+
+</html>

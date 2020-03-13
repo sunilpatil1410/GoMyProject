@@ -24,7 +24,7 @@ public class ClientService implements CommonService<ClientTable> {
 	public List<ClientTable> findAll() {	
 		List<ClientTable> l =clientRepository.findAll();
 		//System.out.println(l);
-		printList(l);
+		//printList(l);
 		//l=null;
 		return l;
 	}
@@ -79,6 +79,14 @@ public class ClientService implements CommonService<ClientTable> {
 	public void deleteById(int theId) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public List<ClientTable> findByName(String name) {
+		System.out.println("@@ "+name);
+		//List<ClientTable> result = clientRepository.findByClientShortName(name.toUpperCase());
+		List<ClientTable> result = clientRepository.findByClientShortNameStartingWith(name.toUpperCase());
+		//List<ClientTable> result = clientRepository.findByClientShortNameLike(name.toUpperCase());
+		return result;
 	}
 
 	

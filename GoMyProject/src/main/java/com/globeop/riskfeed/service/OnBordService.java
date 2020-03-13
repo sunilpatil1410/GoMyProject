@@ -34,4 +34,14 @@ public class OnBordService {
 		
 		//fundService.save(fund);
 	}
+	
+	
+	public void addFundDetails(OnBordDto onBordDto) {
+		ClientTable client=clientService.findById(onBordDto.getClientId());
+		FundTable fund = new FundTable();
+		fund.setFundShortName(onBordDto.getFundName());
+		fund.setModified_date(new Date());
+		client.addFund(fund);
+		clientService.save(client);
+	}
 }

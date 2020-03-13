@@ -19,8 +19,7 @@
 </head>
 <body>
 
-	<form th:action="@{/AddClient}" th:object="${clientTable}"
-		method="get">
+	<form th:action="@{/AddClient}" th:object="${clientTable}" method="get">
 		<input type="text" name="ClientShortName" th:field="*{ClientShortName}">
 		<!-- <input type="text" name="" th:field="{}" > -->
 		<input type="submit" name="Add" id="Add"

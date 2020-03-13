@@ -1,0 +1,61 @@
+
+#SpringBootDB_Test
+
+drop table if exists RiskAggregator;
+
+CREATE TABLE `RiskAggregator` (
+  `RiskAggregatorId` int(11) NOT NULL AUTO_INCREMENT,
+  `RiskAggregatorName` varchar(255) DEFAULT NULL,
+  `RiskAggregatorContact` varchar(255) DEFAULT NULL,  
+  `Modified_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+select * from RiskAggregator;
+
+
+INSERT INTO `SpringBootDB_Test`.`RiskAggregator` (`RiskAggregatorId`, `RiskAggregatorName`, `RiskAggregatorContact`, `Modified_date`) VALUES ('1', 'HP', 'Hp@msci.com', '2020-02-27');
+
+
+select * from FundTable;
+
+CREATE TABLE `FundTable` (
+  `FundID` int(11) NOT NULL AUTO_INCREMENT,
+  `FundShortName` varchar(255) DEFAULT NULL,
+  `Modified_date` datetime DEFAULT NULL,
+  `ClientID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`FundID`),
+  KEY `FK1` (`ClientID`),
+  CONSTRAINT `FK1` FOREIGN KEY (`ClientID`) REFERENCES `ClientTable` (`ClientID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
+drop table if exists ClientOnboardTable;
+
+CREATE TABLE `ClientOnboardTable` (
+  `ClientOnboardId` int(11) NOT NULL AUTO_INCREMENT,
+  `ClientID` int(11) NOT NULL,
+  `RiskAggregatorId` int(11) NOT NULL,
+  `FundID` int(11) NOT NULL,
+  `SetUpDate` date DEFAULT NULL,
+  `EndDate` date DEFAULT NULL,
+  `AutomationProcess` varchar(45) DEFAULT NULL,
+  `IsActive` varchar(45) NOT NULL,
+  `Comments` varchar(200) DEFAULT NULL,
+  `Frequency` varchar(45) DEFAULT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ClientOnboardId`),
+  KEY `ClientOnboardTable_fk_1` (`ClientID`),
+  KEY `ClientOnboardTable_fk_2` (`FundID`),
+  KEY `ClientOnboardTable_fk_3` (`RiskAggregatorId`),
+  CONSTRAINT `ClientOnboardTable_fk_1` FOREIGN KEY (`ClientID`) REFERENCES `ClientTable` (`ClientID`),
+  CONSTRAINT `ClientOnboardTable_fk_2` FOREIGN KEY (`FundID`) REFERENCES `FundTable` (`FundID`),
+  CONSTRAINT `ClientOnboardTable_fk_3` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `RiskAggregator` (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+
+select * from ClientTable c
+left join FundTable f on f.ClientID=c.ClientID
+left join ClientOnboardTable co on co.ClientID=c.ClientID
+left join RiskAggregator r on r.RiskAggregatorId=co.RiskAggregatorId;

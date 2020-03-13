@@ -8,12 +8,10 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity  
 @Table(name="FundTable")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class FundTable implements Serializable{
 	
 
@@ -28,13 +26,15 @@ public class FundTable implements Serializable{
 	@GeneratedValue	(strategy=GenerationType.AUTO)
 	//@GeneratedValue	
 	private int FundID;
-	//private int ClientID;
-	
+
+
 	@Column(name = "FundShortName")
 	private String FundShortName;
 	
 	@Column(name = "Modified_date")
 	private Date Modified_date;
+
+		
 	
 	//@ManyToOne
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -44,6 +44,7 @@ public class FundTable implements Serializable{
 	@JsonManagedReference
 	@OneToMany(targetEntity = ClientOnboardTable.class, cascade = CascadeType.ALL, mappedBy="fund") 	
     private Set<ClientOnboardTable> clientOnboardSet;
+	
 	
 	
 	@JsonBackReference
@@ -77,9 +78,7 @@ public class FundTable implements Serializable{
 
 	public void setModified_date(Date modified_date) {
 		Modified_date = modified_date;
-	}
-	
-	
+	}	
 	
 	public Set<ClientOnboardTable> getClientOnboardSet() {
 		return clientOnboardSet;
