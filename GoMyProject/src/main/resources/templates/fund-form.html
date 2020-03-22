@@ -21,48 +21,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 
- 
- <script type="text/javascript">
+<!-- multi select -->
 
-jQuery(document).ready(function($) {
+<link href="/multi-select/css/multi-select.css" rel="stylesheet" />
+<script src="/multi-select/js/jquery.multi-select.js"></script>
 
-	// to get the client list in drop down.
-	jQuery("#client").autocomplete({		
-		source: "\clientList",
-		minLength: 0,
-        scroll: true,
-        select: function(event, ui){
-        	this.value=ui.item.label;
-        	$("#client").val(ui.item.label);
-        	//console.log(this.value);
-        	//console.log(ui.item);
-        	$("#clientId").val(ui.item.value);
-        	return false;
-        }
-	});
-	
-	// its check if clien field is blank then blank clientId as well
-	jQuery('#client').change(function(event) {		
-		//let clientLength = $('#client').val().length;
-		//console.log(clientLength);
-		if( $('#client').val() == "" ){
-			$("#clientId").val("");
-		}	
-	});
-			
-	
-	 
-});
+<link href="/multi-select/css/select2.css" rel="stylesheet" />
+<script src="/multi-select/js/select2.js"></script>
 
-</script>
-
-
-<script type="text/javascript">
-
-$(function(){
-	  $("#nav-placeholder").load("Nav");
-	});
-</script>
+<script src="/js/autocomplete.js"></script>
 
 <head>
 <meta charset="ISO-8859-1">
@@ -72,11 +39,31 @@ $(function(){
 <div id="nav-placeholder"></div>
 <div class="container">
 	
-	
+	<h3>Add Funds</h3>
+	<hr>	
+
 	<form action="#" th:action="@{/AddFunds}" th:object="${onBordDto}" method="post">	
 		<input id="client" type="text" class="form-control mb-4 col-4">		
 		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
-		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"	class="form-control mb-4 col-4">		
+		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"	class="form-control mb-4 col-4">
+		
+<!-- 		<select multiple="multiple" th:field="*{clientFunds}" id="clientFunds" name="clientFunds[]">
+  			<option value="option 1">Option 1</option>
+  			<option value="option 2">Option 2</option>
+  			<option value="option 3">Option 3</option>
+  			<option value="option 4">Option 4</option>
+  			<option value="option n">Option n</option>
+		</select>	 -->
+		
+		<!-- <select class="js-example-basic-multiple" multiple="multiple" > -->
+		<select class="form-control mb-4 col-4" id ="funds" multiple="multiple" th:field="*{fundName}" >
+  			<!-- <option value="US">United States</option>
+  			<option value="IND">India</option>
+  			<option value="GBR">Great Britain</option> -->
+		</select>
+		
+		<br>
+		<br>
 		<button type="submit" class="btn btn-info col-2">Save</button>
 	</form>
 </div>	
