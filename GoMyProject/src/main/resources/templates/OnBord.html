@@ -10,9 +10,12 @@
 <script type="text/javascript" scr="https://code.jquery.com/jquery-1.12.4.js"></script>
  -->
 
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
-<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
- <script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.js}" ></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<script type="text/javascript"
+	th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
+<script type="text/javascript"
+	th:href="@{/webjars/jquery/3.3.1/jquery.js}"></script>
 
 <!-- <script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}" ></script> -->
 
@@ -27,46 +30,80 @@
 <script type="text/javascript" src="/jquery/jquery-ui-1.12.1/external/jquery/jquery.1.12.4.js"/>
 <script type="text/javascript" src="/jquery/jquery-ui-1.12.1/jquery-ui.min.js"/>
  -->
- 
- <script src="/jquery/jquery-3.4.1.js" ></script>
+
+<script src="/jquery/jquery-3.4.1.js"></script>
 
 <!-- Working -->
 
-<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"  />
-    <!-- <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet"
+	type="text/css" />
+<!-- <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-<script type="text/javascript" th:href="@{/webjars/popper.js/1.14.3/popper.js}"></script>
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
- 
- 
- <!-- <script type="text/javascript" src="/js/autocomplete.js"></script> -->
- <script type="text/javascript">
+<script type="text/javascript"
+	th:href="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<!-- <script type="text/javascript" src="/js/autocomplete.js"></script> -->
+
+
+<script type="text/javascript">
+ //to load nav bar
+ $(function(){
+	  $("#nav-placeholder").load("Nav");
+	});
+	
 
 jQuery(document).ready(function($) {
 
 	// to get the client list in drop down.
-	jQuery("#client").autocomplete({		
-		source: "\clientList",
-		minLength: 0,
-        scroll: true,
-        select: function(event, ui){
-        	this.value=ui.item.label;
-        	$("#client").val(ui.item.label);
-        	//console.log(this.value);
-        	//console.log(ui.item);
-        	$("#clientId").val(ui.item.value);
-        	
-        	alert("INSID");
-        	jQuery.getJSON("getFundsFromClient", { 
-        		p1 : ui.item.label
-   		 	}, function(responseData) { 
-   			 	console.log(responseData);
-   		 	});
-        	return false;
-        }
+	jQuery("#client").autocomplete({
+		source : "\clientList",
+		minLength : 0,
+		scroll : true,
+		select : function(event, ui) {
+			this.value = ui.item.label;
+			$("#client").val(ui.item.label);
+			//console.log(this.value);
+			//console.log(ui.item);
+			$("#clientId").val(ui.item.value);
+
+			alert("INSID");
+			jQuery.getJSON("getFundsFromClient", {
+				p1 : ui.item.label
+			}, function(responseData) {
+				console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#funds').empty();
+				var clientFunds = jQuery('#funds');
+				jQuery.each(responseData, function(key, value) {
+					console.log(value.label + " >> "+value.value);										
+					jQuery('<option id =' +value.value+'>').val(value.value)
+            	    .text(value.label).appendTo(clientFunds);			
+				});
+
+			});
+			return false;
+		}
 	});
+	
+	//label	value
+			
+	$("#funds").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#funds").select2({
+		  placeholder: 'Select Funds',
+		  allowClear: true
+		});
+	
 	
 	// its check if clien field is blank then blank clientId as well
 	jQuery('#client').change(function(event) {		
@@ -84,23 +121,16 @@ jQuery(document).ready(function($) {
 </script>
 
 
-<script type="text/javascript">
-
-$(function(){
-	  $("#nav-placeholder").load("Nav");
-	});
-</script>
-
-
 
 </head>
 <body>
 
-<div id="nav-placeholder"></div>
-<br>
-<div class="container">
+	<div id="nav-placeholder"></div>
+	
+	<br>
+	<div class="container">
 
-<!-- 	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
+		<!-- 	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
 		
 		<input id="client" type="text" class="form-control mb-4 col-4">
 		
@@ -122,38 +152,24 @@ $(function(){
 		<button type="submit" class="btn btn-info col-2">Save</button>
 	</form> -->
 
+	<h3>Client Onboard</h3>
+	<hr>
+	
 
-Testing
-<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
-		
+	<!-- Testing
+	<hr> -->
+	Client
+	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
 		<input id="client" type="text" class="form-control mb-4 col-4">
-		
-		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>
-		
-		<input list="client_search" class="form-control mb-4 col-4" type="search" placeholder="search" aria-label="Search" name="search">
-		<datalist id="client_search">
-			<option>A</option>
-			<option>B</option>
-			<option>C</option>
-			<option>X</option>
-		</datalist>
-		</input>
-					
-		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"
-		class="form-control mb-4 col-4">
-		<!-- <input type="text" th:field="*{}" placeholder=""> -->
-		<!-- <input type="text" th:field="*{}" placeholder=""> -->
-		
-
-<h6>Add no of funds</h6>
-                <tr th:each="fund, itemStat : *{fundList}">
-                    <td><input th:field="*{fundList[__${itemStat.index}__].FundShortName}"  class="form-control mb-4 col-4" th:placeholder="${itemStat.count}"/></td>                    
-                </tr>
-
+		<input type="text" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		Funds
+		<br>
+		<select class="form-control mb-4 col-4" id ="funds" multiple="multiple" th:field="*{fundName}" >
+  		</select>
+		<br>
+		<br>
 		<button type="submit" class="btn btn-info col-2">Save</button>
 	</form>
-
-
 
 </div>
 
