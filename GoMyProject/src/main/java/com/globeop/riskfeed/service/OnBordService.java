@@ -38,10 +38,18 @@ public class OnBordService {
 	
 	public void addFundDetails(OnBordDto onBordDto) {
 		ClientTable client=clientService.findById(onBordDto.getClientId());
-		FundTable fund = new FundTable();
-		fund.setFundShortName(onBordDto.getFundName());
-		fund.setModified_date(new Date());
-		client.addFund(fund);
+		String fundNames=onBordDto.getFundName();
+		if(fundNames.startsWith(",")){
+			fundNames=onBordDto.getFundName().substring(1,fundNames.length());
+		}
+		String Funds[]=fundNames.split(",");
+		for(String s: Funds) {
+			FundTable fund = new FundTable();
+			System.out.println("@@@ "+s);
+			fund.setModified_date(new Date());
+			fund.setFundShortName(s);
+			client.addFund(fund);
+		}		
 		clientService.save(client);
 	}
 }
