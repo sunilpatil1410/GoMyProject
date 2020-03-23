@@ -51,7 +51,7 @@ public class FundService implements CommonService<FundTable> {
 
 	@Override
 	public void deleteById(int theId) {
-		// TODO Auto-generated method stub
+		fundTableRepository.deleteById(theId);
 		
 	}
 

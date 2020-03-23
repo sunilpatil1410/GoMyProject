@@ -59,8 +59,7 @@ public class AutocompleteController {
     @RequestMapping(value="/getFundsFromClient",method = RequestMethod.GET)
 	@ResponseBody
     public List<LabelValueDto> test2(@RequestParam (value="p1", required=false, defaultValue="") String clientName) {
-    	System.out.println(clientName);
-    	return GenricUtil.getClientFundList(clientName);
-        //return "Test";
+    	//System.out.println(clientName);
+    	return GenricUtil.getClientFundList(clientName);        
     }
 }
