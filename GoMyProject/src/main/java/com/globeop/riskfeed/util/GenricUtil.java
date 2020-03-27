@@ -3,12 +3,8 @@ package com.globeop.riskfeed.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
-
 import com.globeop.riskfeed.dto.LabelValueDto;
+
 
 
 public class GenricUtil {
@@ -79,7 +75,11 @@ public class GenricUtil {
 		 list.add(l4);
 		 return list;
 	}
+		public static void testEnum() {
+		System.out.println(Continent.valueOf("Asia"));
+	}
     public static void main(String[] args) throws Exception {        
-    	getClientFundList("BFAM");
+    	//getClientFundList("BFAM");
+    	//testEnum();
     }
 }
