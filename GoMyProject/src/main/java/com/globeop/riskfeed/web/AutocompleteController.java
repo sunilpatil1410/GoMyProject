@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.globeop.riskfeed.dto.LabelValueDto;
 import com.globeop.riskfeed.entity.ClientTable;
+import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.ClientService;
+import com.globeop.riskfeed.service.RiskAggregatorService;
 import com.globeop.riskfeed.util.GenricUtil;
 
 @RestController
@@ -25,6 +27,9 @@ public class AutocompleteController {
 	@Autowired
 	private ClientService clientService;
 	
+	@Autowired
+	private RiskAggregatorService riskAggregatorService;
+	
 	private List<ClientTable> allClients;
 	
 	@RequestMapping(value="/clientList",method = RequestMethod.GET)
@@ -32,7 +37,6 @@ public class AutocompleteController {
 	public List<LabelValueDto>/*Map<Integer, String>*/ /*List<String>*/ clientList(@RequestParam (value="term", required=false, defaultValue="") String name){
     	//System.out.println(" INSIDE clientList "+name);
 		List<LabelValueDto> l= new ArrayList<LabelValueDto>();   
-		Map<Integer, String> test= new HashMap<Integer, String>();
     	try {
     		if(name.length()>2) {
     			allClients = clientService.findAll();
@@ -55,6 +59,20 @@ public class AutocompleteController {
     	return l;	
 	}
 	
+	@RequestMapping(value="/riskAggregatorList",method = RequestMethod.GET)
+	@ResponseBody
+	public List<LabelValueDto> riskAggregatorList(@RequestParam (value="term", required=false, defaultValue="") String name){
+		List<LabelValueDto> l= new ArrayList<LabelValueDto>(); 
+		List<RiskAggregator> riskAggregators = riskAggregatorService.findAll();
+		
+		for(RiskAggregator ra: riskAggregators) {
+			LabelValueDto labelValueDto = new LabelValueDto();
+			labelValueDto.setLabel(ra.getRiskAggregatorName());
+			labelValueDto.setValue(ra.getId()+"");
+			l.add(labelValueDto);
+		}
+		return l;	
+	}
 	  
     @RequestMapping(value="/getFundsFromClient",method = RequestMethod.GET)
 	@ResponseBody
