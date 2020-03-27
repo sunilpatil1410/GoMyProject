@@ -32,8 +32,8 @@ public class RiskAggregatorService implements CommonService<RiskAggregator> {
 	}
 
 	@Override
-	public void save(RiskAggregator obj) {
-		// TODO Auto-generated method stub
+	public void save(RiskAggregator theRiskAggregator) {
+		riskAggregatorRepository.save(theRiskAggregator);
 		
 	}
 
