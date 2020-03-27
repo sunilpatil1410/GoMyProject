@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class RiskAggregator {
 	private String RiskAggregatorContact;
 	
 	@Column(name="Modified_date")
-	private String Modified_date;
+	private Date Modified_date;
 		
 	@JsonManagedReference
 	@OneToMany(targetEntity = ClientOnboardTable.class, cascade = CascadeType.ALL, mappedBy="riskAggregator") 	
@@ -64,13 +65,16 @@ public class RiskAggregator {
 		RiskAggregatorContact = riskAggregatorContact;
 	}
 
-	public String getModified_date() {
+	
+	public Date getModified_date() {
 		return Modified_date;
 	}
 
-	public void setModified_date(String modified_date) {
+
+	public void setModified_date(Date modified_date) {
 		Modified_date = modified_date;
 	}
+
 
 	public Set<ClientOnboardTable> getClientOnboardSet() {
 		return clientOnboardSet;
