@@ -56,4 +56,19 @@ jQuery(document).ready(function($) {
 			$("#clientId").val("");
 		}	
 	}); 
+	
+	
+	jQuery.getJSON("riskAggregatorList", function(responseData) {
+		//console.log(responseData);
+		//var clientFunds = jQuery('#clientFunds');
+		jQuery('#riskAggregator').empty();
+		let ra =jQuery('#riskAggregator');
+		jQuery('<option>').val(-1).text("Select RiskAggregator").appendTo(ra);
+		jQuery.each(responseData, function(key, value) {
+			//console.log(value.label + " >> "+value.value);				
+			jQuery('<option id =' +value.value+'>').val(value.value)
+    	    .text(value.label).appendTo(ra);			
+		});
+
+	});
 });
