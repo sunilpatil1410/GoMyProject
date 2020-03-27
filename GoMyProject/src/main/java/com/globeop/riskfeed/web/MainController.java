@@ -6,11 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,14 +25,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.globeop.risk.web.util.RecordNotFoundException;
+//import com.globeop.risk.web.util.RecordNotFoundException;
 import com.globeop.riskfeed.dto.LabelValueDto;
 import com.globeop.riskfeed.entity.ClientTable;
 import com.globeop.riskfeed.entity.FundTable;
 import com.globeop.riskfeed.entity.OnBordDto;
+import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.FundService;
 import com.globeop.riskfeed.service.OnBordService;
+import com.globeop.riskfeed.service.RiskAggregatorService;
+import com.globeop.riskfeed.validator.OnBordValidator;
 
 @Controller
 public class MainController {
@@ -39,6 +48,9 @@ public class MainController {
 
 	@Autowired
 	private FundService fundService;
+	
+	@Autowired
+	private RiskAggregatorService riskAggregatorService;
 
 	
     @GetMapping("/")
@@ -88,7 +100,6 @@ public class MainController {
     }
     
     
-         
     // return form to add new client
     @GetMapping("/AddClient")
     public String showFormForAdd(Model model) {   
@@ -112,28 +123,92 @@ public class MainController {
 		return "redirect:/getClient";
 	}
     
-
-    // get OnBord page
-    @GetMapping("/OnBordClient")
-    public String showOnBordForm(Model model) {   
-    	OnBordDto onBordDto = new OnBordDto();
-    	model.addAttribute("onBordDto", onBordDto);       	
-    	return "OnBord";
+    
+ // return list of clients available in Mysql DB
+    @GetMapping("/getRiskAggregator")
+    public String getRiskAggregator(Model model) {           	
+    	List<RiskAggregator> riskAggreList = riskAggregatorService.findAll();
+    	model.addAttribute("riskAggreList", riskAggreList);    	
+    	return "riskAggregator";
     }
     
-    // add OnBord details 
-    @RequestMapping("/AddOnBordDetails")
-	public String addOnBordDetails (@ModelAttribute("OnBordDetails") OnBordDto onBordDto) {		
+ // return form to add new client
+    @GetMapping("/AddRiskAggregator")
+    public String riskAggregatorForm(Model model) {   
+    	RiskAggregator riskAggregator = new RiskAggregator();
+    	model.addAttribute("riskAggregator", riskAggregator);       	
+    	return "riskAggregator-form";
+    }
+    
+    // Add new client and return list of clients
+    @RequestMapping(value="/AddRiskAggregator", method=RequestMethod.POST)
+	public String saveRiskAggregator (@ModelAttribute("riskAggregator") RiskAggregator theRiskAggregator) {		
 		try {
-			//System.out.println(onBordDto.getFundList());
-			//onBordService.addDetails(onBordDto);
+			System.out.println(" >>> "+theRiskAggregator.getRiskAggregatorName());
+			theRiskAggregator.setModified_date(new Date());
+			theRiskAggregator.setRiskAggregatorName(theRiskAggregator.getRiskAggregatorName().toUpperCase());
+			riskAggregatorService.save(theRiskAggregator);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";
 		}
-    	
-    	//return "SaveUpdate";
-		return "redirect:/getClient";
+		return "redirect:/getRiskAggregator";
+	}
+         
+    
+
+	
+	  // get OnBord page
+	  
+	  @GetMapping("/OnBordClient")
+	  public String showOnBordForm(Model model) {
+	  OnBordDto onBordDto = new OnBordDto(); model.addAttribute("onBordDto",
+	  onBordDto); return "OnBord"; }
+	 
+	// get OnBord page
+	@GetMapping("/TestOnBordDetails")
+	public String testShowOnBordForm2(OnBordDto onBordDto) {       	    	
+		return "OnBord";
+	}    
+	  
+	  
+    // get OnBord page
+    @GetMapping("/AddOnBordDetails")
+    public String showOnBordForm2(OnBordDto onBordDto) {       	    	
+    	return "OnBord";
+    }
+    
+    @Autowired
+    private OnBordValidator onBordValidator;
+    
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+       binder.addValidators(onBordValidator);
+    }
+    
+    // add OnBord details 
+    //@RequestMapping("/AddOnBordDetails")
+    @PostMapping("/AddOnBordDetails")
+	public String addOnBordDetails( /* @ModelAttribute("onBordDto") */ @Valid  OnBordDto onBordDto, Errors errors) {		
+		try {
+			//System.out.println(onBordDto.getFundList());
+			//onBordService.addDetails(onBordDto);
+			System.out.println(onBordDto);
+			//model.addAttribute("onBordDto",onBordDto);
+			if(errors.hasErrors()) {
+				System.out.println("ERROR accoured");				       	
+				
+				return "OnBord";				
+				//return "redirect:/AddOnBordDetails";
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+    	    	
+		//return "redirect:/getClient";
+		return "redirect:/OnBordClient";
 	}
     
     //Testing 
