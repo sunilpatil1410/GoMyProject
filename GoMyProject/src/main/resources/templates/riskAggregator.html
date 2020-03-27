@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+<title>RiskAggregators</title>
+<!-- <link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<script type="text/javascript" th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}" ></script> -->
+
+
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
+
+<script type="text/javascript">
+
+$(function(){
+	  $("#nav-placeholder").load("Nav");
+	});
+</script>
+
+
+
+</head>
+
+<body>
+<div id="nav-placeholder"></div>
+<br>
+<div class="container">
+
+<!-- <a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+
+<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
+
+        <a th:href="@{/AddRiskAggregator}" class="btn btn-primary btn-sm mb-3">Add RiskAggregator</a>
+		<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+		<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
+		<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+
+	<div class="container">
+	
+	<table class="table table-bordered table-hover">
+		<thead class="thead-dark">
+			<th>Sr No.</th>	
+			<th>RiskAggregator Id</th>
+			<th>RiskAggregator  Name</th>
+			<th>RiskAggregator  Contact</th>
+			<th>Modified Date</th>
+		</thead>
+		
+		<tbody>
+			<tr th:each="riskAggregator, iterationStatus : ${riskAggreList}">				
+			<td th:text="${iterationStatus.count}">	
+			<td th:text="${riskAggregator.id}">
+			<td th:text="${riskAggregator.RiskAggregatorName}">
+			<td th:text="${riskAggregator.RiskAggregatorContact}">
+			<td th:text="${riskAggregator.Modified_date}">
+		</tbody>
+	</table>
+	
+	</div>
+</div>
+
+</body>
+
+
+</html>
