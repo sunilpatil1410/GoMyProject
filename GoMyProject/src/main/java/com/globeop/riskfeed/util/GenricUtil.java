@@ -75,11 +75,8 @@ public class GenricUtil {
 		 list.add(l4);
 		 return list;
 	}
-		public static void testEnum() {
-		System.out.println(Continent.valueOf("Asia"));
-	}
+		
     public static void main(String[] args) throws Exception {        
     	//getClientFundList("BFAM");
-    	//testEnum();
     }
 }
